@@ -2,10 +2,6 @@
 {
   "name": "backend",
   "version": "0.0.0",
-  "engines": {
-    "node": ">= 6.9.4",
-    "npm": ">= 4.4.0"
-  },
   "private": true,
   "scripts": {
     "start": "node app.js"
