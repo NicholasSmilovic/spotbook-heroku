@@ -13,8 +13,8 @@ let Promise = require("bluebird");
 
 let client_id = process.env.clientID // Your client id
 let client_secret = process.env.clientSecret; // Your secret
-let redirect_uri = `http://localhost:3000/spotify/callback` // Your redirect uri
-let app_uri = `http://localhost:3000`
+let redirect_uri = `https://spotifytuner.herokuapp.com/spotify/callback` // Your redirect uri
+let app_uri = `https://spotifytuner.herokuapp.com`
 
 let generateRandomString = function(length) {
   let text = '';

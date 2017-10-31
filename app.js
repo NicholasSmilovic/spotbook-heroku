@@ -21,8 +21,8 @@ let PORT = process.env.PORT || 8080
 
 let client_id = process.env.clientID // Your client id
 let client_secret = process.env.clientSecret; // Your secret
-let redirect_uri = `http://localhost:3000/spotify/callback` // Your redirect uri
-let app_uri = `http://localhost:3001`
+let redirect_uri = `https://spotifytuner.herokuapp.com/spotify/callback` // Your redirect uri
+let app_uri = `https://spotifytuner.herokuapp.com`
 
 app.use(express.static(__dirname + '/public'))
 .use(cookieParser());
@@ -30,7 +30,7 @@ app.use(express.static(__dirname + '/public'))
 
 
 var allowCrossDomain = function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
+  res.header('Access-Control-Allow-Origin', 'https://spotifytuner.herokuapp.com');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   res.header('Access-Control-Allow-Credentials', true);
