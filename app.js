@@ -67,3 +67,4 @@ app.listen(PORT, () => { //listen on the port 8080 and let node know server star
   console.log(`Example listening on port ${PORT}`);
 });
 
+module.exports = app
