@@ -6,17 +6,14 @@ const db = require('./ActivePlaylistsDB.js')
 
 const PORT = 8080;
 let sockets = {}
-const server = express()
-.use(express.static('public'))
-.listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
 
 const sendUpdate = (callback) => {
   db.updateRoomData(sockets, callback)
 }
 
 
-const wss = new SocketServer({ server });
 const server = require('../app.js')
+const wss = new SocketServer({ server });
 wss.broadcast = function broadcast(data, reciever, type, error, ws, callback) {
   message = {
     reciever: reciever,
