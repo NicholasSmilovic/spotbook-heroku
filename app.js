@@ -67,9 +67,6 @@ app.listen(PORT, () => { //listen on the port 8080 and let node know server star
   console.log(`Example listening on port ${PORT}`);
 });
 
-module.exports = app
-
-
 
 const SocketServer = require('ws').Server;
 const uuidv1 = require('uuid/v1');
@@ -82,8 +79,8 @@ const sendUpdate = (callback) => {
   db.updateRoomData(sockets, callback)
 }
 
-const server = https.createServer(app);
-const wss = new SocketServer({ server });
+
+const wss = new SocketServer({ app });
 wss.broadcast = function broadcast(data, reciever, type, error, ws, callback) {
   message = {
     reciever: reciever,
