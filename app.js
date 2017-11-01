@@ -27,16 +27,21 @@ let app_uri = `https://spotifytuner.herokuapp.com`
 app.use(express.static(__dirname + '/public'))
 .use(cookieParser());
 
+const cors = require('cors');
+const express = require('express');
+let app = express();
+app.use(cors());
+app.options('*', cors());
 
 
-var allowCrossDomain = function(req, res, next) {
-  res.Header('Access-Control-Allow-Origin', "http://spotifytuner.herokuapp.com");
- res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
- res.header('Access-Control-Allow-Headers', 'Content-Type');
- res.header('Access-Control-Allow-Credentials', true);
- next();
-}
-app.use(allowCrossDomain)
+// var allowCrossDomain = function(req, res, next) {
+//   res.Header('Access-Control-Allow-Origin', "http://spotifytuner.herokuapp.com");
+//  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//  res.header('Access-Control-Allow-Headers', 'Content-Type');
+//  res.header('Access-Control-Allow-Credentials', true);
+//  next();
+// }
+// app.use(allowCrossDomain)
 
 app.use(morgan('dev'));
 
