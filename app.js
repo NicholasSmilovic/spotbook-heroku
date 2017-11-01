@@ -84,9 +84,15 @@ const db = require('./active-server/ActivePlaylistsDB.js')
 const https = require('https');
 
 const wsServer = express()
+
+
+var options = {
+  key: fs.readFileSync('test/fixtures/keys/agent2-key.pem'),
+  cert: fs.readFileSync('test/fixtures/keys/agent2-cert.cert')
+};
+
 const server = https.createServer(wsServer)
-.use((req, res) => res.sendFile(INDEX) )
-.listen(8080, () => console.log(`Listening on ${ PORT }`));
+.listen(options, 8080);
 
 const wss = new SocketServer({ server });
 const sendUpdate = (callback) => {
