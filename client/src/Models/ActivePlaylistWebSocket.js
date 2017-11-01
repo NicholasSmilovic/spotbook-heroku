@@ -10,6 +10,7 @@ module.exports = (stateOperations) => {
   }))
 
 
+
   socket.onmessage = (event) => {
     messageParse(stateOperations, JSON.parse(event.data))
   }
