@@ -82,6 +82,8 @@ const uuidv1 = require('uuid/v1');
 const messageParse = require('./active-server/messageParse.js')
 const db = require('./active-server/ActivePlaylistsDB.js')
 const https = require('https');
+var fs = require('fs');
+
 
 const wsServer = express()
 
