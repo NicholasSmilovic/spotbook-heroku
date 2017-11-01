@@ -4,7 +4,7 @@ const uuidv1 = require('uuid/v1');
 const messageParse = require('./messageParse.js')
 const db = require('./ActivePlaylistsDB.js')
 
-const PORT = 8080;
+
 let sockets = {}
 
 const sendUpdate = (callback) => {
@@ -12,8 +12,7 @@ const sendUpdate = (callback) => {
 }
 
 const app = require('../app.js')
-const server = https.createServer(app);
-const wss = new SocketServer({ server });
+const wss = new SocketServer({ app });
 wss.broadcast = function broadcast(data, reciever, type, error, ws, callback) {
   message = {
     reciever: reciever,
