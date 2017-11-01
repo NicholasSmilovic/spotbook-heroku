@@ -1,4 +1,4 @@
-const socket = new WebSocket("wss://spotifytuner.herokuapp.com")
+const socket = new WebSocket("ws://spotifytuner.herokuapp.com")
 const messageParse = require("./messageParse.js")
 
 module.exports = (stateOperations) => {
