@@ -81,20 +81,11 @@ const SocketServer = require('ws').Server;
 const uuidv1 = require('uuid/v1');
 const messageParse = require('./active-server/messageParse.js')
 const db = require('./active-server/ActivePlaylistsDB.js')
-const https = require('https');
-var fs = require('fs');
-
+const http = require('http');
 
 const wsServer = express()
-
-
-var options = {
-  key: fs.readFileSync('test/fixtures/keys/agent2-key.pem'),
-  cert: fs.readFileSync('test/fixtures/keys/agent2-cert.cert')
-};
-
-const server = https.createServer(wsServer)
-.listen(options, 8080);
+const server = http.createServer(wsServer)
+.listen(8080, () => console.log(`Listening on ${ PORT }`));
 
 const wss = new SocketServer({ server });
 const sendUpdate = (callback) => {
