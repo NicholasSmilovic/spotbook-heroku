@@ -28,7 +28,6 @@ app.use(express.static(__dirname + '/public'))
 .use(cookieParser());
 
 const cors = require('cors');
-let app = express();
 app.use(cors());
 app.options('*', cors());
 
