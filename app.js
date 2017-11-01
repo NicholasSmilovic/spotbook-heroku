@@ -83,9 +83,10 @@ const messageParse = require('./active-server/messageParse.js')
 const db = require('./active-server/ActivePlaylistsDB.js')
 const http = require('http');
 
-const server = express()
+const server = http.createServer(app)
+.listen(8080, () => console.log(`Listening on ${ PORT }`));
 
-const wss = new SocketServer({ post:8080 });
+const wss = new SocketServer({ server });
 const sendUpdate = (callback) => {
   db.updateRoomData(sockets, callback)
 }
