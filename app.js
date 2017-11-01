@@ -30,15 +30,11 @@ app.use(express.static(__dirname + '/public'))
 
 
 var allowCrossDomain = function(req, res, next) {
-  var allowedOrigins = ["https://spotifytuner.herokuapp.com", 'https://spotifytuner.herokuapp.com', 'wss://spotifytuner.herokuapp.com', 'ws://spotifytuner.herokuapp.com']
-  var origin = req.headers.origin;
-  if(allowedOrigins.indexOf(origin) > -1){
-       res.setHeader('Access-Control-Allow-Origin', "https://spotifytuner.herokuapp.com");
-  }
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Credentials', true);
-  next();
+ res.Header('Access-Control-Allow-Origin', "*");
+ res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+ res.header('Access-Control-Allow-Headers', 'Content-Type');
+ res.header('Access-Control-Allow-Credentials', true);
+ next();
 }
 app.use(allowCrossDomain)
 
@@ -84,39 +80,39 @@ const messageParse = require('./active-server/messageParse.js')
 const db = require('./active-server/ActivePlaylistsDB.js')
 
 const server = express()
-  .use((req, res) => res.sendFile(INDEX) )
-  .listen(8080, () => console.log(`Listening on ${ PORT }`));
+.use((req, res) => res.sendFile(INDEX) )
+.listen(8080, () => console.log(`Listening on ${ PORT }`));
 
-  const wss = new SocketServer({ server });
-  const sendUpdate = (callback) => {
-    db.updateRoomData(sockets, callback)
+const wss = new SocketServer({ server });
+const sendUpdate = (callback) => {
+  db.updateRoomData(sockets, callback)
+}
+
+wss.broadcast = function broadcast(data, reciever, type, error, ws, callback) {
+  message = {
+    reciever: reciever,
+    type: type,
+    data: data,
+    error: error
   }
-
-  wss.broadcast = function broadcast(data, reciever, type, error, ws, callback) {
-    message = {
-      reciever: reciever,
-      type: type,
-      data: data,
-      error: error
+  wss.clients.forEach(function each(client){
+    if(client.readyState === ws.OPEN){
+      client.send(JSON.stringify(message))
     }
-    wss.clients.forEach(function each(client){
-      if(client.readyState === ws.OPEN){
-        client.send(JSON.stringify(message))
-      }
+  })
+  if(callback) {
+    sockets[ws.id] = callback()
+    sendUpdate(() => {
+      messageParse({type: "getPlaylists"}, ws, wss.broadcast)
     })
-    if(callback) {
-      sockets[ws.id] = callback()
-      sendUpdate(() => {
-        messageParse({type: "getPlaylists"}, ws, wss.broadcast)
-      })
-    }
   }
+}
 
-  wss.on('connection', (ws) => {
-    ws.id = uuidv1()
-    console.log("Client Connected: ", ws.id)
-    sockets[ws.id] = ws
-    ws.on('message', (data) => {
+wss.on('connection', (ws) => {
+  ws.id = uuidv1()
+  console.log("Client Connected: ", ws.id)
+  sockets[ws.id] = ws
+  ws.on('message', (data) => {
     // console.log("recieved message")
     // console.log(data)
     messageParse(JSON.parse(data), sockets[ws.id], wss.broadcast)
