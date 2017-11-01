@@ -11,8 +11,8 @@ const sendUpdate = (callback) => {
   db.updateRoomData(sockets, callback)
 }
 
-
-const server = require('../app.js')
+const app = require('../app.js')
+const server = https.createServer(app);
 const wss = new SocketServer({ server });
 wss.broadcast = function broadcast(data, reciever, type, error, ws, callback) {
   message = {
