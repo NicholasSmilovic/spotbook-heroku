@@ -11,33 +11,34 @@ const sendUpdate = (callback) => {
   db.updateRoomData(sockets, callback)
 }
 
-const app = require('../app.js')
-const wss = new SocketServer({ app });
-wss.broadcast = function broadcast(data, reciever, type, error, ws, callback) {
-  message = {
-    reciever: reciever,
-    type: type,
-    data: data,
-    error: error
-  }
-  wss.clients.forEach(function each(client){
-    if(client.readyState === ws.OPEN){
-      client.send(JSON.stringify(message))
+// const app = require('../app.js')
+module.exports = (app) => {
+  const wss = new SocketServer({ app });
+  wss.broadcast = function broadcast(data, reciever, type, error, ws, callback) {
+    message = {
+      reciever: reciever,
+      type: type,
+      data: data,
+      error: error
     }
-  })
-  if(callback) {
-    sockets[ws.id] = callback()
-    sendUpdate(() => {
-      messageParse({type: "getPlaylists"}, ws, wss.broadcast)
+    wss.clients.forEach(function each(client){
+      if(client.readyState === ws.OPEN){
+        client.send(JSON.stringify(message))
+      }
     })
+    if(callback) {
+      sockets[ws.id] = callback()
+      sendUpdate(() => {
+        messageParse({type: "getPlaylists"}, ws, wss.broadcast)
+      })
+    }
   }
-}
 
-wss.on('connection', (ws) => {
-  ws.id = uuidv1()
-  console.log("Client Connected: ", ws.id)
-  sockets[ws.id] = ws
-  ws.on('message', (data) => {
+  wss.on('connection', (ws) => {
+    ws.id = uuidv1()
+    console.log("Client Connected: ", ws.id)
+    sockets[ws.id] = ws
+    ws.on('message', (data) => {
     // console.log("recieved message")
     // console.log(data)
     messageParse(JSON.parse(data), sockets[ws.id], wss.broadcast)
@@ -52,3 +53,4 @@ wss.on('connection', (ws) => {
     })
   });
 });
+}
