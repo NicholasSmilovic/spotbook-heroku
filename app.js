@@ -30,7 +30,7 @@ app.use(express.static(__dirname + '/public'))
 
 
 var allowCrossDomain = function(req, res, next) {
- res.Header('Access-Control-Allow-Origin', "*");
+  res.Header('Access-Control-Allow-Origin', "http://spotifytuner.herokuapp.com");
  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
  res.header('Access-Control-Allow-Headers', 'Content-Type');
  res.header('Access-Control-Allow-Credentials', true);
