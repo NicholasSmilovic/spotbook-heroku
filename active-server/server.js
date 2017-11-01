@@ -8,8 +8,6 @@ let sockets = {}
 
 module.exports = (app, PORT) => {
   const server = app
-  .use(express.static('public'))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
   const sendUpdate = (callback) => {
     db.updateRoomData(sockets, callback)
