@@ -76,7 +76,6 @@ const uuidv1 = require('uuid/v1');
 const messageParse = require('./active-server/messageParse.js')
 const db = require('./active-server/ActivePlaylistsDB.js')
 
-const PORT = 8080;
 let sockets = {}
 
 const sendUpdate = (callback) => {
