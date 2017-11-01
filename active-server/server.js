@@ -4,16 +4,18 @@ const uuidv1 = require('uuid/v1');
 const messageParse = require('./messageParse.js')
 const db = require('./ActivePlaylistsDB.js')
 
-
 let sockets = {}
 
-const sendUpdate = (callback) => {
-  db.updateRoomData(sockets, callback)
-}
+module.exports = (app, PORT) => {
+  const server = app
+  .use(express.static('public'))
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
-// const app = require('../app.js')
-module.exports = (app) => {
-  const wss = new SocketServer({ app });
+  const sendUpdate = (callback) => {
+    db.updateRoomData(sockets, callback)
+  }
+
+  const wss = new SocketServer({ server });
   wss.broadcast = function broadcast(data, reciever, type, error, ws, callback) {
     message = {
       reciever: reciever,
